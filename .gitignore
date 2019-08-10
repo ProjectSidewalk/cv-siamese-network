@@ -1,0 +1,6 @@
+__pycache__
+data
+temp_dataset
+.vscode
+.ipynb_checkpoints
+models
