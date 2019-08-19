@@ -3,4 +3,5 @@ data
 temp_dataset
 .vscode
 .ipynb_checkpoints
-models
+models/skw.base_cnn.v1.ep_20
+*epoch*
