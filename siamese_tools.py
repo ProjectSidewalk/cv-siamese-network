@@ -13,10 +13,11 @@ from torchvision.models.resnet import ResNet, BasicBlock
 
 # Adapted from https://github.com/harveyslash/Facial-Similarity-with-Siamese-Networks-in-Pytorch/blob/master/Siamese-networks-medium.ipynb
 class SiameseDataset(Dataset):
-    def __init__(self,imageFolderDataset,transform=None,depth="RGB"):
+    def __init__(self,imageFolderDataset,transform=None,depth="RGB",class_info=False):
         self.imageFolderDataset = imageFolderDataset    
         self.transform = transform
         self.depth = depth
+        self.class_info = class_info
         
     def __getitem__(self,index):
         img0_tuple = random.choice(self.imageFolderDataset.imgs)
@@ -40,8 +41,10 @@ class SiameseDataset(Dataset):
         if self.transform is not None:
             img0 = self.transform(img0)
             img1 = self.transform(img1)
-        
-        return img0, img1 , torch.from_numpy(np.array([int(img1_tuple[1]!=img0_tuple[1])],dtype=np.float32))
+        if self.class_info:
+            return img0, img1 , torch.from_numpy(np.array([int(img1_tuple[1]!=img0_tuple[1])],dtype=np.float32)), img0_tuple[1], img1_tuple[1]
+        else:
+            return img0, img1 , torch.from_numpy(np.array([int(img1_tuple[1]!=img0_tuple[1])],dtype=np.float32))
     
     def __len__(self):
         return len(self.imageFolderDataset.imgs)
